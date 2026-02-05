@@ -1,4 +1,4 @@
-package com.gameserver.mechanics.database;
+package com.server.mechanics.database;
 
 /**
  * Immutable configuration object for the game database.

@@ -1,4 +1,4 @@
-package com.gameserver.util.json;
+package com.server.util.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;

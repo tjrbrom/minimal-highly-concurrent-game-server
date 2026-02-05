@@ -1,4 +1,4 @@
-package com.gameserver;
+package com.server;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;

@@ -1,4 +1,4 @@
-package com.gameserver.config;
+package com.server.config;
 
 /**
  * Root application.properties configuration.

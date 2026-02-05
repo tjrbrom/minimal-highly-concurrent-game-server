@@ -1,7 +1,7 @@
-package com.gameserver.mechanics;
+package com.server.mechanics;
 
-import com.gameserver.config.AppConfig;
-import com.gameserver.config.AppConfigLoader;
+import com.server.config.AppConfig;
+import com.server.config.AppConfigLoader;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 

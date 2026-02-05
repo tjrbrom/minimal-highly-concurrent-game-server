@@ -1,6 +1,6 @@
-package com.gameserver.mechanics.database;
+package com.server.mechanics.database;
 
-import com.gameserver.config.AppConfig;
+import com.server.config.AppConfig;
 import com.google.inject.Inject;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

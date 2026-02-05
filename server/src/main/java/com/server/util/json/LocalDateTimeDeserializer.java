@@ -1,4 +1,4 @@
-package com.gameserver.util.json;
+package com.server.util.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

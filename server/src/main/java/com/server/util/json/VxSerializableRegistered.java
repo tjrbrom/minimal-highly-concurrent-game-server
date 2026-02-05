@@ -1,4 +1,4 @@
-package com.gameserver.util.json;
+package com.server.util.json;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
-package com.gameserver.config;
+package com.server.config;
 
-import com.gameserver.mechanics.GameModule;
+import com.server.mechanics.GameModule;
 
 import java.io.InputStream;
 import java.util.Properties;

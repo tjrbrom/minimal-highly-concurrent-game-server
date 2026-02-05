@@ -1,0 +1,10 @@
+{
+    "server": {
+        "port": 33333,
+        "exec": "server/target/test-app.jar"
+    },
+    "credentials": {
+        "username": "tjrbrom",
+        "password": "password"
+    }
+}

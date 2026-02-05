@@ -1,9 +1,9 @@
-package com.gameserver.mechanics;
+package com.server.mechanics;
 
-import com.gameserver.HttpVerticle;
-import com.gameserver.config.AppConfig;
-import com.gameserver.util.json.VxSerializable;
-import com.gameserver.mechanics.database.GameDatabase;
+import com.server.HttpVerticle;
+import com.server.config.AppConfig;
+import com.server.util.json.VxSerializable;
+import com.server.mechanics.database.GameDatabase;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.vertx.core.DeploymentOptions;
