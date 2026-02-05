@@ -8,7 +8,7 @@ I plan to add more features and utilize them in more specific implementations, f
 
 ---
 
-To get an idea of what's going on, check `src/main/java/com/gameserver/mechanics/Main.java`
+To get an idea of what's going on, check `server/src/main/java/com/server/launcher/GameLauncher.java`
 
 This is the application entry point and shows how configuration, Vert.x, database initialization, and HTTP deployment are set up.
 
@@ -21,7 +21,7 @@ This is the application entry point and shows how configuration, Vert.x, databas
 
 ---
 
-## Donations
+## Donate
 
 If you found this useful and want me to continue working on this project,
 XMR (Monero) donations are welcome: 

@@ -23,7 +23,7 @@ public final class AppConfigLoader {
 
             p.load(in);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load config", e);
+            throw new RuntimeException("Failed to load cli.config", e);
         }
 
         int instances =

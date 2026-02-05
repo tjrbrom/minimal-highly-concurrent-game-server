@@ -30,13 +30,16 @@ public final class GameLauncher {
     private final GameApp app;
     private final List<IRouter> routers;
     private final List<WebSocketRouter> webSocketRouters;
+    private String configPath = "config/settings.json";
 
-    private GameLauncher(int cores,
+    private GameLauncher(String configPath,
+                         int cores,
                          Vertx vertx,
                          List<String> packages,
                          GameApp app,
                          List<IRouter> routers,
                          List<WebSocketRouter> webSocketRouters) {
+        this.configPath = configPath;
         this.cores = cores;
         this.vertx = vertx;
         this.packages = packages;
@@ -56,7 +59,7 @@ public final class GameLauncher {
 
         Promise<JsonObject> config = Promise.promise();
 
-        vertx.fileSystem().readFile("config")
+        vertx.fileSystem().readFile("cli.config")
                 .onSuccess(buffer -> config.complete(buffer.toJsonObject()))
                 .onFailure(ex -> config.complete(new JsonObject()));
 

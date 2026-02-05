@@ -1,0 +1,9 @@
+{
+  "web": {
+    "port": 5006
+  },
+  "keys": {
+    "public": "config/keys/public.pem",
+    "private": "config/keys/private.pem"
+  }
+}
