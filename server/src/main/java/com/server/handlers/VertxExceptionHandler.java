@@ -1,6 +1,7 @@
 package com.server.handlers;
 
 import com.server.util.exceptions.VertxJsonException;
+import com.server.websocket.handler.WebSocketRoutingContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
