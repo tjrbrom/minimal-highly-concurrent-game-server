@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS "sample" (
+    id INTEGER NOT NULL,
+    name VARCHAR(64) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
+);

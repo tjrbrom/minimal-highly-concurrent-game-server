@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: game
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: game_db
+    ports:
+      - "5438:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - game
+
+networks:
+  game: { }
+
+volumes:
+  pg_data:
