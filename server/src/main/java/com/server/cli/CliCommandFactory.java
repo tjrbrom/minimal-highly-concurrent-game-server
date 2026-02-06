@@ -1,17 +1,16 @@
 package com.server.cli;
 
-import com.server.cli.CliCommandRequest;
-import com.server.launcher.GameApp;
+import com.server.launcher.Application;
 import io.vertx.core.Vertx;
 
 import java.util.Optional;
 
 public final class CliCommandFactory {
 
-    private final GameApp app;
+    private final Application app;
     private final Vertx vertx;
 
-    public CliCommandFactory(GameApp app, Vertx vertx) {
+    public CliCommandFactory(Application app, Vertx vertx) {
         this.app = app;
         this.vertx = vertx;
     }

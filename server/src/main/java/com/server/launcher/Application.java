@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.concurrent.TimeUnit;
 
-public abstract class GameApp extends AbstractVerticle {
+public abstract class Application extends AbstractVerticle {
 
     public final String name;
 
@@ -34,7 +34,7 @@ public abstract class GameApp extends AbstractVerticle {
     @Getter
     private boolean running;
 
-    protected GameApp(String name, long initialMillisecond) {
+    protected Application(String name, long initialMillisecond) {
         this.name = name;
         this.period = TimeUnit.MILLISECONDS.toMillis(500);
         this.previousNanosecond = TimeUnit.MILLISECONDS.toNanos(initialMillisecond);

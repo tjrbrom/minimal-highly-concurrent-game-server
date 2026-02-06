@@ -1,13 +1,13 @@
 package com.server.cli;
 
-import com.server.launcher.GameApp;
+import com.server.launcher.Application;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
 import java.util.Optional;
 
 public record ServerStopCmd(
-        GameApp app,
+        Application app,
         Vertx vertx
 ) implements ICliCommand {
 

@@ -3,7 +3,7 @@ package com.server.cli;
 import com.server.handlers.BasicCredentialHandler;
 import com.server.handlers.LoggerHandler;
 import com.server.handlers.VertxExceptionHandler;
-import com.server.launcher.GameApp;
+import com.server.launcher.Application;
 import com.server.util.json.VertxJsonResponse;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -26,7 +26,7 @@ public final class CliServerVerticle extends AbstractVerticle {
 
     @SneakyThrows
     public CliServerVerticle(Vertx vertx,
-                             GameApp app,
+                             Application app,
                              int port,
                              String username,
                              String password) {

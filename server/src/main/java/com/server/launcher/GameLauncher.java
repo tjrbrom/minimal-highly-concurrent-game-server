@@ -27,16 +27,16 @@ public final class GameLauncher {
     private final int cores;
     private final Vertx vertx;
     private final List<String> packages;
-    private final GameApp app;
+    private final Application app;
     private final List<IRouter> routers;
     private final List<WebSocketRouter> webSocketRouters;
     private String configPath = "config/settings.json";
 
-    private GameLauncher(String configPath,
+    public GameLauncher(String configPath,
                          int cores,
                          Vertx vertx,
                          List<String> packages,
-                         GameApp app,
+                         Application app,
                          List<IRouter> routers,
                          List<WebSocketRouter> webSocketRouters) {
         this.configPath = configPath;

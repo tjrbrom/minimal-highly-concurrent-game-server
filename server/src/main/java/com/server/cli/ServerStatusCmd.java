@@ -1,12 +1,12 @@
 package com.server.cli;
 
-import com.server.launcher.GameApp;
+import com.server.launcher.Application;
 import io.vertx.core.json.JsonObject;
 
 import java.util.Optional;
 
 public record ServerStatusCmd(
-        GameApp app
+        Application app
 ) implements ICliCommand {
 
     @Override
