@@ -1,4 +1,4 @@
-package com.server;
+package com.server.mechanics;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;

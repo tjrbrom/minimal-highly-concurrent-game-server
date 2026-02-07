@@ -1,6 +1,5 @@
 package com.server.mechanics;
 
-import com.server.HttpVerticle;
 import com.server.config.AppConfig;
 import com.server.util.json.VxSerializable;
 import com.server.mechanics.database.GameDatabase;

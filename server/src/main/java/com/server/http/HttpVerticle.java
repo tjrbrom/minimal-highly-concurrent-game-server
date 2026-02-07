@@ -15,15 +15,12 @@ public final class HttpVerticle extends AbstractVerticle {
 
     private final int port;
     private final Router router;
-    private final boolean firstInstance;
     private final WebSocketHandler webSocketHandler;
 
     public HttpVerticle(int port, Router router,
-                        boolean firstInstance,
                         WebSocketHandler webSocketHandler) {
         this.port = port;
         this.router = router;
-        this.firstInstance = firstInstance;
         this.webSocketHandler = webSocketHandler;
     }
 
@@ -43,8 +40,6 @@ public final class HttpVerticle extends AbstractVerticle {
                 .compose(server -> Future.succeededFuture())
                 .onSuccess(Void -> {
                     startPromise.complete();
-                    if (firstInstance)
-                        log.info("Server running at port {}", port);
                 })
                 .onFailure(startPromise::fail);
     }
