@@ -82,7 +82,7 @@ public final class GameLauncher {
             final String password = credentials != null ? credentials.getString("password") : null;
 
             return vertx.deployVerticle(() -> new CliServerVerticle(vertx, app, port, username, password), new DeploymentOptions()
-                            .setThreadingModel(ThreadingModel.VIRTUAL_THREAD)
+                            .setThreadingModel(ThreadingModel.EVENT_LOOP)
                             .setInstances(1))
                 .compose(Void -> configuration())
                 .compose(config -> {
@@ -98,7 +98,7 @@ public final class GameLauncher {
 
                     return vertx.deployVerticle(app, new DeploymentOptions()
                                 .setInstances(1)
-                                .setThreadingModel(ThreadingModel.VIRTUAL_THREAD))
+                                .setThreadingModel(ThreadingModel.EVENT_LOOP))
                         .compose(deploymentId -> {
 
                             Router router = createRouter(sessionStore);
@@ -110,7 +110,7 @@ public final class GameLauncher {
                                 () -> new HttpVerticle(3333, router, webSocketHandler),
                                 new DeploymentOptions()
                                     .setInstances(cores)
-                                    .setThreadingModel(ThreadingModel.VIRTUAL_THREAD)
+                                    .setThreadingModel(ThreadingModel.EVENT_LOOP)
                             );
                         })
                         .onSuccess(Void -> log.info("Successfully launched application"))

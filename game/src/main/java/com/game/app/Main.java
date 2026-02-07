@@ -28,12 +28,12 @@ public final class Main {
         PGDatabase db = PGDatabase.initialize(vertx, 5438, "localhost", "game-db", "game", "password");
 
         GameLauncher launcher = new GameLauncher("config/settings.json",
-                Runtime.getRuntime().availableProcessors(),
-                vertx,
-                List.of(Main.class.getPackageName()),
-                new GameApplication(),
-                List.of(new GameRouter()),
-                List.of()
+            Runtime.getRuntime().availableProcessors(),
+            vertx,
+            List.of(Main.class.getPackageName()),
+            new GameApplication(),
+            List.of(new GameRouter()),
+            List.of()
         );
 
         launcher.start();
