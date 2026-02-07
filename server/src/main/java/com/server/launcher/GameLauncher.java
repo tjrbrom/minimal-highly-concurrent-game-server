@@ -31,6 +31,24 @@ import java.util.Set;
 
 import static org.reflections.scanners.Scanners.SubTypes;
 
+/**
+ * Entry point and bootstrapper for the game server.
+ *
+ * <p>This class is responsible for:
+ * <ul>
+ *   <li>Registering serialization metadata</li>
+ *   <li>Loading CLI and application configuration</li>
+ *   <li>Wiring dependency injection</li>
+ *   <li>Deploying core verticles (CLI, game application, HTTP/WebSocket)</li>
+ * </ul>
+ *
+ * <p>This class does not contain game logic, request handling logic,
+ * or persistence logic. It only orchestrates startup and deployment.
+ *
+ * <p>All deployed verticles use the {@link io.vertx.core.ThreadingModel#EVENT_LOOP}
+ * threading model. Blocking work must be delegated to dedicated worker or
+ * virtual-thread verticles.
+ */
 @Slf4j
 public final class GameLauncher {
 
@@ -59,6 +77,21 @@ public final class GameLauncher {
         this.webSocketRouters = webSocketRouters;
     }
 
+    /**
+     * Bootstraps and starts the game server.
+     *
+     * <p>The startup sequence is:
+     * <ol>
+     *   <li>Register default and discovered {@link VxSerializable} types</li>
+     *   <li>Load optional CLI configuration</li>
+     *   <li>Load main application configuration</li>
+     *   <li>Initialize JWT authentication</li>
+     *   <li>Wire dependency injection</li>
+     *   <li>Deploy CLI, game application, and HTTP/WebSocket verticles</li>
+     * </ol>
+     *
+     * <p>If any step fails, startup is aborted and the error is logged.
+     */
     public void start() {
 
         VxSerializable.registerDefaults();
@@ -84,45 +117,58 @@ public final class GameLauncher {
             return vertx.deployVerticle(() -> new CliServerVerticle(vertx, app, port, username, password), new DeploymentOptions()
                             .setThreadingModel(ThreadingModel.EVENT_LOOP)
                             .setInstances(1))
-                .compose(Void -> configuration())
-                .compose(config -> {
-                    configuration = config;
-                    return jwtAuth();
-                }).compose(jwtAuth -> {
+                    .compose(Void -> configuration())
+                    .compose(config -> {
+                        configuration = config;
+                        return jwtAuth();
+                    }).compose(jwtAuth -> {
 
-                    SessionStore sessionStore = SessionStore.create(vertx);
+                        SessionStore sessionStore = SessionStore.create(vertx);
 
-                    LauncherModule launcherModule = new LauncherModule(vertx, configuration, new JwtHandler(jwtAuth), sessionStore);
-                    Injector injector = Guice.createInjector(launcherModule);
-                    routers.forEach(injector::injectMembers);
+                        LauncherModule launcherModule = new LauncherModule(vertx, configuration, new JwtHandler(jwtAuth), sessionStore);
+                        Injector injector = Guice.createInjector(launcherModule);
+                        routers.forEach(injector::injectMembers);
 
-                    return vertx.deployVerticle(app, new DeploymentOptions()
-                                .setInstances(1)
-                                .setThreadingModel(ThreadingModel.EVENT_LOOP))
-                        .compose(deploymentId -> {
+                        return vertx.deployVerticle(app, new DeploymentOptions()
+                                        .setInstances(1)
+                                        .setThreadingModel(ThreadingModel.EVENT_LOOP))
+                                .compose(deploymentId -> {
 
-                            Router router = createRouter(sessionStore);
-                            WebSocketRouter wsRouter = createWebSocketRouter();
+                                    Router router = createRouter(sessionStore);
+                                    WebSocketRouter wsRouter = createWebSocketRouter();
 
-                            WebSocketHandler webSocketHandler = new WebSocketHandler(vertx, wsRouter, sessionStore);
+                                    WebSocketHandler webSocketHandler = new WebSocketHandler(vertx, wsRouter, sessionStore);
 
-                            return vertx.deployVerticle(
-                                () -> new HttpVerticle(3333, router, webSocketHandler),
-                                new DeploymentOptions()
-                                    .setInstances(cores)
-                                    .setThreadingModel(ThreadingModel.EVENT_LOOP)
-                            );
-                        })
-                        .onSuccess(Void -> log.info("Successfully launched application"))
-                        .onFailure(ex -> {
-                            log.error("Failed to launch application", ex);
-                            System.exit(-1);
-                        });
-                });
+                                    return vertx.deployVerticle(
+                                            () -> new HttpVerticle(3333, router, webSocketHandler),
+                                            new DeploymentOptions()
+                                                    .setInstances(cores)
+                                                    .setThreadingModel(ThreadingModel.EVENT_LOOP)
+                                    );
+                                })
+                                .onSuccess(Void -> log.info("Successfully launched application"))
+                                .onFailure(ex -> {
+                                    log.error("Failed to launch application", ex);
+                                    System.exit(-1);
+                                });
+                    });
         });
 
     }
 
+    /**
+     * Loads the main application configuration.
+     *
+     * <p>The configuration is loaded from a JSON file using Vert.x
+     * {@link ConfigRetriever}. The file path is resolved from the
+     * {@code portal.config} system property, falling back to the
+     * configured default path.
+     *
+     * <p>The retriever is closed immediately after the configuration
+     * is retrieved.
+     *
+     * @return a future completing with the loaded configuration
+     */
     private Future<JsonObject> configuration() {
         String filePath = (String) System.getProperties().getOrDefault("portal.config", configPath);
         ConfigStoreOptions fileStore = new ConfigStoreOptions()
@@ -149,6 +195,18 @@ public final class GameLauncher {
         return promise.future();
     }
 
+    /**
+     * Initializes JWT authentication using RSA key pairs.
+     *
+     * <p>The configuration must contain a {@code keys} object with
+     * {@code public} and {@code private} key file paths. Both files
+     * are loaded asynchronously from the filesystem.
+     *
+     * <p>If any required key is missing or cannot be read, the returned
+     * future fails and server startup is aborted.
+     *
+     * @return a future completing with an initialized {@link JWTAuth} instance
+     */
     private Future<JWTAuth> jwtAuth() {
         if (!configuration.containsKey("keys")) {
             return Future.failedFuture(new Exception("Missing rsa keys"));
@@ -178,6 +236,16 @@ public final class GameLauncher {
                 });
     }
 
+    /**
+     * Creates the root HTTP router.
+     *
+     * <p>The root router installs common handlers (session, logging,
+     * request body) and mounts all provided {@link IRouter} instances
+     * as sub-routers.
+     *
+     * @param sessionStore the session store shared across HTTP and WebSocket layers
+     * @return the composed root router
+     */
     private Router createRouter(SessionStore sessionStore) {
 
         Router root = Router.router(vertx);
@@ -196,6 +264,15 @@ public final class GameLauncher {
         return root;
     }
 
+    /**
+     * Creates the root WebSocket router.
+     *
+     * <p>Routers provided explicitly to the launcher are mounted first,
+     * followed by any WebSocket routers exposed by {@link IRouter}
+     * implementations.
+     *
+     * @return the composed WebSocket router
+     */
     private WebSocketRouter createWebSocketRouter() {
         WebSocketRouter root = new WebSocketRouter();
         for (WebSocketRouter webSocketRouter : webSocketRouters) {
