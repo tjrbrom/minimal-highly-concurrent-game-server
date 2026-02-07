@@ -1,4 +1,4 @@
-# Simplest, most minimal highly-concurrent game server I can think of
+# Simple, minimal highly-concurrent game server.
 
 This project exists either to be reused as a template and extended, or to get an idea of how you can start building a highly concurrent server,
 aimed mainly at servicing online multiplayer gaming.
