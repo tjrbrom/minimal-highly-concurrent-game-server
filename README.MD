@@ -23,8 +23,5 @@ This is the application entry point and shows how configuration, Vert.x, databas
 
 ## Donate
 
-If you found this useful and want me to continue working on this project,
-XMR (Monero) donations are welcome: 
-
-46GnmqJozufQUMYWTVHgH9A6txiCPh4KU3cPbXK2jEWPLoU8DfReACNGk3QaXrSXj6JLRXvd3KsU7MifxdkK6FdCGTpcivY
+XMR: 46GnmqJozufQUMYWTVHgH9A6txiCPh4KU3cPbXK2jEWPLoU8DfReACNGk3QaXrSXj6JLRXvd3KsU7MifxdkK6FdCGTpcivY
 

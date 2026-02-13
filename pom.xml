@@ -12,6 +12,7 @@
     <modules>
         <module>server</module>
         <module>game</module>
+        <module>portal</module>
     </modules>
 
     <properties>
